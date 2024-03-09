@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var cpu = 0
     @State var showAlert = false
     @State var alert = 0
+    @State var winner = ""
     
     func turn(number: Int) {
         cpu = Int.random(in: 1...3)
@@ -26,8 +27,14 @@ struct ContentView: View {
             playerScore += 1
         }
         
-        if (playerScore == 5) || (cpuScore == 5) {
+        if (playerScore == 6) || (cpuScore == 6) {
             showAlert = true
+            if playerScore < cpuScore{
+                winner = "CPU"
+            }
+            else{
+                winner = "Player"
+            }
             alert = 1
         }
      else if result == 0 { // Draw condition
@@ -39,7 +46,7 @@ struct ContentView: View {
     func resetgame(){
         playerScore = 0
         cpuScore = 0
-        cpu=0
+        cpu = 0
     }
     
     func calculateWinner(cpu:Int,player:Int)-> Int {
@@ -165,12 +172,12 @@ struct ContentView: View {
             .alert(isPresented: $showAlert) {
                 if alert == 1 {
                     return Alert(
-                        title: Text("Game Over"),
-                        dismissButton: .default(Text("Restart")) {
+                        title: Text("The winner is: " + winner + "🚀🚀"),
+                        dismissButton: .default(Text("New game")) {
                             resetgame()
                         }
                     )
-                } else {
+                } else  {
                     return Alert(
                         title: Text("Draw"),
                         dismissButton: .default(Text("OK"))
